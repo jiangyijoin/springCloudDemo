@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaoly.frm.security.dao.mapper.ResourcesMapper">
+  
+  <select id="selectAllResources" resultMap="ResourceVoMap">
+	 SELECT  C.CLIENT_NAME,R1.RESOURCE_NAME PARENT_NAME,R.* FROM T_SYS_RESOURCE R
+	 LEFT JOIN T_SYS_CLIENT C ON C.ID = R.CLIENT_ID 
+	 LEFT JOIN T_SYS_RESOURCE R1 ON R1.ID = R.PARENT_ID
+	 <where>
+	 	<if test="id != null and id !=''">
+			and R.ID = #{id}
+		</if>
+		<if test="resourceLevel != null and resourceLevel != ''">
+			and R.RESOURCE_LEVEL = #{resourceLevel}
+		</if>
+		<if test="resourceName != null and resourceName != ''">
+			and R.RESOURCE_NAME like '%'||#{resourceName}||'%'
+		</if>
+		<if test="nameCn != null and nameCn != ''">
+			and R.NAME_CN like '%'||#{nameCn}||'%'
+		</if>
+		<if test="resourceAlias != null and resourceAlias != ''">
+			and R.RESOURCE_ALIAS like '%'||#{resourceAlias}||'%'
+		</if>
+		<if test="resourceVal != null and resourceVal != ''">
+			and R.RESOURCE_VAL = #{resourceVal}
+		</if>
+		<if test="resourceType != null and resourceType != ''">
+			and R.RESOURCE_TYPE = #{resourceType}
+		</if>
+		<if test="parentId != null and parentId != ''">
+			and R.PARENT_ID = #{parentId}
+		</if>
+		<if test="weight != null and weight != ''">
+			and R.WEIGHT = #{weight}
+		</if>
+		<if test="icon != null and icon != ''">
+			and R.ICON = #{icon}
+		</if>
+		<if test="remark != null and remark != ''">
+			and R.REMARK = #{remark}
+		</if>
+		<if test="clientId != null and clientId != ''">
+			and R.CLIENT_ID = #{clientId}
+		</if>
+		<if test="delFlag != null and delFlag != ''">
+			and R.DEL_FLAG = #{delFlag}
+		</if>
+	 </where>
+  </select>
+
+  <resultMap id="ResourceVoMap" type="com.chinaoly.frm.security.vo.ResourceVo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="RESOURCE_LEVEL" jdbcType="DECIMAL" property="resourceLevel" />
+    <result column="RESOURCE_NAME" jdbcType="VARCHAR" property="resourceName" />
+    <result column="NAME_CN" jdbcType="VARCHAR" property="nameCn" />
+    <result column="RESOURCE_ALIAS" jdbcType="VARCHAR" property="resourceAlias" />
+    <result column="RESOURCE_VAL" jdbcType="VARCHAR" property="resourceVal" />
+    <result column="RESOURCE_TYPE" jdbcType="VARCHAR" property="resourceType" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="WEIGHT" jdbcType="DECIMAL" property="weight" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName" />
+    <result column="PARENT_NAME" jdbcType="VARCHAR" property="parentName" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap" type="com.chinaoly.frm.security.Model.Resources">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="RESOURCE_LEVEL" jdbcType="DECIMAL" property="resourceLevel" />
+    <result column="RESOURCE_NAME" jdbcType="VARCHAR" property="resourceName" />
+    <result column="NAME_CN" jdbcType="VARCHAR" property="nameCn" />
+    <result column="RESOURCE_ALIAS" jdbcType="VARCHAR" property="resourceAlias" />
+    <result column="RESOURCE_VAL" jdbcType="VARCHAR" property="resourceVal" />
+    <result column="RESOURCE_TYPE" jdbcType="VARCHAR" property="resourceType" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="WEIGHT" jdbcType="DECIMAL" property="weight" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+  </resultMap>
+</mapper>

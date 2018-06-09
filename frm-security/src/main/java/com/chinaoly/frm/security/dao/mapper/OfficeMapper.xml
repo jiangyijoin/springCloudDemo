@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaoly.frm.security.dao.mapper.OfficeMapper">
+  <resultMap id="BaseResultMap" type="com.chinaoly.frm.security.Model.Office">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="VARCHAR" property="officeId" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="PARENT_IDS" jdbcType="VARCHAR" property="parentIds" />
+    <result column="OFFICE_NAME" jdbcType="VARCHAR" property="officeName" />
+    <result column="WEIGHT" jdbcType="DECIMAL" property="weight" />
+    <result column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+    <result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="GRADE" jdbcType="VARCHAR" property="grade" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="ZIP_CODE" jdbcType="VARCHAR" property="zipCode" />
+    <result column="MASTER" jdbcType="VARCHAR" property="master" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="FAX" jdbcType="VARCHAR" property="fax" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PRIMARY_PERSON" jdbcType="VARCHAR" property="primaryPerson" />
+    <result column="DEPUTY_PERSON" jdbcType="VARCHAR" property="deputyPerson" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="SIMPLE_NAME" jdbcType="VARCHAR" property="simpleName" />
+    <result column="BOOLSP" jdbcType="DECIMAL" property="boolsp" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="OFFICE_NUM" jdbcType="VARCHAR" property="officeNum" />
+    <result column="PARENT_NAME" jdbcType="VARCHAR" property="parentName" />
+    <result column="OFFICE_CODE" jdbcType="VARCHAR" property="officeCode" />
+  </resultMap>
+  
+  
+  <resultMap id="BaseResultMap1" type="com.chinaoly.frm.security.vo.OfficeTreeVo">
+    <id column="ID" jdbcType="VARCHAR" property="officeId" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="PARENT_IDS" jdbcType="VARCHAR" property="parentIds" />
+    <result column="OFFICE_NAME" jdbcType="VARCHAR" property="officeName" />
+    <result column="WEIGHT" jdbcType="DECIMAL" property="weight" />
+    <result column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+    <result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="GRADE" jdbcType="VARCHAR" property="grade" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="ZIP_CODE" jdbcType="VARCHAR" property="zipCode" />
+    <result column="MASTER" jdbcType="VARCHAR" property="master" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="FAX" jdbcType="VARCHAR" property="fax" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PRIMARY_PERSON" jdbcType="VARCHAR" property="primaryPerson" />
+    <result column="DEPUTY_PERSON" jdbcType="VARCHAR" property="deputyPerson" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="SIMPLE_NAME" jdbcType="VARCHAR" property="simpleName" />
+    <result column="BOOLSP" jdbcType="DECIMAL" property="boolsp" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="OFFICE_NUM" jdbcType="VARCHAR" property="officeNum" />
+    <result column="PARENT_NAME" jdbcType="VARCHAR" property="parentName" />
+    <result column="OFFICE_CODE" jdbcType="VARCHAR" property="officeCode" />
+    <result column="NUM" jdbcType="DECIMAL" property="num" />
+  </resultMap>
+  
+  <sql id="baseOffice">
+	ID,PARENT_ID,PARENT_IDS,OFFICE_NAME,WEIGHT,AREA_ID,AREA_CODE,TYPE,GRADE,ADDRESS,ZIP_CODE,
+	MASTER,PHONE,FAX,EMAIL,PRIMARY_PERSON,DEPUTY_PERSON,REMARK,SIMPLE_NAME,BOOLSP,DEL_FLAG,CREATE_TIME,
+	CREATE_ID,UPDATE_TIME,UPDATE_ID,OFFICE_NUM,PARENT_NAME,OFFICE_CODE,OFFICE_ORDER
+  </sql>
+  
+  
+  <select id="findCountByParameter" resultType="Long">
+	select COUNT(*) from T_SYS_OFFICE where 
+	(1=2
+	<if test="officeName != null">
+		or OFFICE_NAME = #{officeName}
+	</if>
+	<if test="officeCode != null">
+		or OFFICE_CODE = #{officeCode}
+	</if>
+	) 
+	<if test="officeId != null">
+		and ID != #{officeId}
+	</if>
+</select>
+
+<select id="findOfficeList" resultMap="BaseResultMap">
+	select <include refid="baseOffice"/> from T_SYS_OFFICE
+	where DEL_FLAG = 0 
+		<if test="officeName != null ">
+			and OFFICE_NAME like #{officeName}
+		</if>
+		<if test="officeCode != null ">
+			and OFFICE_CODE like #{officeCode}
+		</if>
+		<if test="parentId != null ">
+			and PARENT_ID = #{parentId}
+		</if>
+		<choose>
+			<when test="order != null and order != '' and sort != null and sort != ''">
+				ORDER BY ${sort} ${order}
+			</when>
+			<otherwise>
+				ORDER BY CREATE_TIME asc
+			</otherwise>
+		</choose>
+</select>
+
+<select id="findOfficeTreeOneByOne" resultMap="BaseResultMap1" 
+	parameterType="com.chinaoly.frm.security.Model.Office">
+select T1.ID,T1.OFFICE_NAME,T1.OFFICE_CODE,t1.OFFICE_ORDER,"COUNT"(T2.ID) as num from T_SYS_OFFICE t1
+LEFT JOIN T_SYS_OFFICE t2 on T1.ID = T2.PARENT_ID and T2.DEL_FLAG = 0
+where T1.DEL_FLAG = 0
+<choose>
+	<when test="parentId != null ">
+		and T1.PARENT_ID = #{parentId} 
+	</when>
+	<otherwise>
+		and T1.PARENT_ID is null 
+	</otherwise>
+</choose>
+GROUP BY T1.ID,T1.OFFICE_NAME,T1.OFFICE_ORDER,T1.CREATE_TIME,T1.OFFICE_CODE
+ORDER BY T1.CREATE_TIME
+</select>
+
+<select id="findOfficeTreeByType" resultMap="BaseResultMap1">
+	select 0 as num, <include refid="baseOffice"/> from T_SYS_OFFICE where DEL_FLAG = 0 
+</select>
+
+<select id="findOfficeByparameter" resultMap="BaseResultMap">
+	select <include refid="baseOffice"/> from T_SYS_OFFICE where 1=2
+	<if test="officeName != null">
+		or OFFICE_NAME = #{officeName}
+	</if>
+	<if test="officeId != null">
+		or ID = #{officeId}
+	</if>
+	<if test="officeCode != null">
+		or OFFICE_CODE = #{officeCode}
+	</if>
+</select>
+
+<insert id="addOfficeList" parameterType="java.util.List">
+	insert all 
+	 <foreach collection="list" item="item" index="index">
+	into T_SYS_OFFICE values
+            (
+            #{item.officeId,jdbcType=VARCHAR},
+            #{item.parentId,jdbcType=VARCHAR},
+            #{item.parentIds,jdbcType=VARCHAR},
+			#{item.officeName,jdbcType=VARCHAR},
+			#{item.weight,jdbcType=INTEGER},
+			#{item.areaId,jdbcType=VARCHAR},
+			#{item.areaCode,jdbcType=VARCHAR},
+			#{item.type,jdbcType=VARCHAR},
+			#{item.grade,jdbcType=INTEGER},
+			#{item.address,jdbcType=TIMESTAMP},
+			#{item.zipCode,jdbcType=VARCHAR},
+			#{item.master,jdbcType=VARCHAR},
+			#{item.phone,jdbcType=VARCHAR},
+			#{item.fax,jdbcType=VARCHAR},
+			#{item.email,jdbcType=VARCHAR},
+			#{item.primaryPerson,jdbcType=VARCHAR},
+			#{item.deputyPerson,jdbcType=VARCHAR},
+			#{item.remark,jdbcType=VARCHAR},
+			#{item.simpleName,jdbcType=VARCHAR},
+			#{item.boolsp,jdbcType=INTEGER},
+			#{item.delFlag,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.createId,jdbcType=VARCHAR},
+			#{item.updateTime,jdbcType=TIMESTAMP},
+			#{item.updateId,jdbcType=VARCHAR},
+			#{item.officeNum,jdbcType=VARCHAR},
+			#{item.parentName,jdbcType=VARCHAR},
+			#{item.officeCode,jdbcType=VARCHAR},
+			#{item.officeOrder,jdbcType=INTEGER}
+            )
+      </foreach>
+	select 1 from dual
+</insert>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaoly.frm.log.dao.mapper.LogMapper" >
+
+<insert id="insertLog" parameterType="com.chinaoly.frm.log.entity.LogEntity">
+         insert into T_SYS_LOG(
+         	ID,
+         	STATUS,
+         	REQUEST_URI,
+         	TITLE,
+         	METHOD,
+         	METHOD_NOTES,
+         	PARAMS,
+         	IP,
+         	QRYUSED_TIME,
+         	USER_AGENT,
+         	EXCEPTION,
+         	CREATE_TIME,
+         	CREATE_ID)
+         values (
+         	#{id,jdbcType=VARCHAR},
+         	#{status,jdbcType=VARCHAR},
+         	#{requestUrl,jdbcType=VARCHAR},
+         	#{title,jdbcType=VARCHAR},
+         	#{method,jdbcType=VARCHAR},
+         	#{methodNotes,jdbcType=VARCHAR},
+         	#{params,jdbcType=CLOB},
+         	#{ip,jdbcType=VARCHAR},
+         	#{qryusedTime,jdbcType=INTEGER},
+         	#{userAgent,jdbcType=VARCHAR},
+         	#{exception,jdbcType=VARCHAR},
+         	#{createTime,jdbcType=TIMESTAMP},
+         	#{createId,jdbcType=VARCHAR})
+</insert>
+
+</mapper>

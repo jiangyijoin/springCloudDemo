@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaoly.frm.security.dao.mapper.RoleMapper">
+  
+  
+  
+  <select id="selectAllRoles" resultMap="BaseResultMap">
+	SELECT * FROM T_SYS_ROLE 
+	<where>
+		<if test="id != null and id != ''">
+	       	and ID=#{id}
+	    </if>
+	    <if test="roleName != null and roleName != ''">
+	       	and ROLE_NAME like '%'||#{roleName}||'%'
+	    </if>
+	    <if test="nameCn != null and nameCn != ''">
+	       	and NAME_CN like '%'||#{nameCn}||'%'
+	    </if>
+	    <if test="delFlag != null and delFlag != ''">
+	       	and DEL_FLAG=#{delFlag}
+	    </if>
+	</where>
+  </select>
+  
+  <resultMap id="BaseResultMap" type="com.chinaoly.frm.security.Model.Role">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+    <result column="NAME_CN" jdbcType="VARCHAR" property="nameCn" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+  </resultMap>
+   <resultMap id="RoleVoMap" type="com.chinaoly.frm.security.vo.RoleVo">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+    <result column="NAME_CN" jdbcType="VARCHAR" property="nameCn" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="ACCOUNT_ID" jdbcType="VARCHAR" property="accountId" />
+    <result column="RESOURCE_ID" jdbcType="VARCHAR" property="resourceId" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaoly.frm.security.dao.mapper.DictTypeMapper">
+  <resultMap id="BaseResultMap" type="com.chinaoly.frm.security.Model.DictType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" jdbcType="VARCHAR" property="dictTypeId" />
+    <result column="DICT_TYPE" jdbcType="VARCHAR" property="dictType" />
+    <result column="DICT_TYPE_NAME" jdbcType="VARCHAR" property="dictTypeName" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="DICT_TYPE_DESCRIPTION" jdbcType="VARCHAR" property="dictTypeDescription" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap1" type="com.chinaoly.frm.security.vo.DictTypeVo">
+    <result column="ID" jdbcType="VARCHAR" property="dictTypeId" />
+    <result column="DICT_TYPE" jdbcType="VARCHAR" property="dictType" />
+    <result column="DICT_TYPE_NAME" jdbcType="VARCHAR" property="dictTypeName" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="DICT_TYPE_DESCRIPTION" jdbcType="VARCHAR" property="dictTypeDescription" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="NUM" jdbcType="DECIMAL" property="num" />
+  </resultMap>
+  
+  <sql id="baseType">
+	ID,DICT_TYPE,DICT_TYPE_NAME,CREATE_TIME,CREATE_ID,
+	UPDATE_TIME,UPDATE_ID,DICT_TYPE_DESCRIPTION,DEL_FLAG
+  </sql>
+
+  <select id="findDictTreeOneByOne" resultMap="BaseResultMap1">
+	select sdt.ID,SDT.DICT_TYPE_NAME,SDT.DICT_TYPE,SDT.DICT_TYPE_DESCRIPTION,"COUNT"(SD.ID) as num from T_SYS_DICT_TYPE sdt
+	left JOIN T_SYS_DICT sd on SD.DICT_TYPE_ID = SDT.ID and SD.DEL_FLAG = 0
+	where SDT.DEL_FLAG = 0 
+	GROUP BY SDT.ID,SDT.DICT_TYPE_NAME,SDT.DICT_TYPE,SDT.DICT_TYPE_DESCRIPTION
+</select>
+
+<select id="findDictTypeByparameter" resultMap="BaseResultMap">
+	select <include refid="baseType"/> from T_SYS_DICT_TYPE where 1=2
+	<if test="dictTypeId != null">
+		or ID = #{dictTypeId}
+	</if>
+	<if test="dictType != null">
+		or DICT_TYPE = #{dictType}
+	</if>
+	<if test="dictTypeName != null">
+		or DICT_TYPE_NAME = #{dictTypeName}
+	</if>
+</select>
+
+  <select id="findDictTypeByparameterFlag" resultType="Long">
+	select COUNT(*) from T_SYS_DICT_TYPE where 
+	(1=2
+	<if test="dictType != null">
+		or DICT_TYPE = #{dictType}
+	</if>
+	<if test="dictTypeName != null">
+		or DICT_TYPE_NAME = #{dictTypeName}
+	</if>
+	) 
+	<if test="dictTypeId != null">
+		and ID != #{dictTypeId}
+	</if>
+</select>
+
+<select id="findDictTypeList" resultMap="BaseResultMap">
+	select <include refid="baseType"/> from T_SYS_DICT_TYPE where DEL_FLAG = 0 
+		<if test="dictType != null ">
+			and DICT_TYPE like #{dictType}
+		</if>
+		<if test="dictTypeName != null ">
+			and DICT_TYPE_NAME like #{dictTypeName}
+		</if>
+		<choose>
+			<when test="order != null and order != '' and sort != null and sort != ''">
+				ORDER BY ${sort} ${order}
+			</when>
+			<otherwise>
+				ORDER BY CREATE_TIME asc
+			</otherwise>
+		</choose>
+</select>
+
+<insert id="addDictTypeList" parameterType="java.util.List">
+	insert all 
+	 <foreach collection="list" item="item" index="index">
+	into T_SYS_DICT_TYPE values
+            (
+            #{item.dictTypeId,jdbcType=VARCHAR},
+			#{item.dictType,jdbcType=VARCHAR},
+			#{item.dictTypeName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.createId,jdbcType=VARCHAR},
+			#{item.updateTime,jdbcType=TIMESTAMP},
+			#{item.updateId,jdbcType=VARCHAR},
+			#{item.dictTypeDescription,jdbcType=VARCHAR},
+			#{item.delFlag,jdbcType=INTEGER}
+            )
+        </foreach>
+	select 1 from dual
+</insert>
+</mapper>

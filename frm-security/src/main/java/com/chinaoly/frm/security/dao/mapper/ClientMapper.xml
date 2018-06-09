@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaoly.frm.security.dao.mapper.ClientMapper">
+
+
+
+	<select id="selectAllAcountInfoes" resultMap="BaseResultMap">
+		select * from T_SYS_CLIENT
+		<where>
+			<if test="id != null and id != ''">
+		       	and ID=#{id}
+		    </if>
+		    <if test="clientName != null and clientName != ''">
+		       	and CLIENT_NAME like '%'||#{clientName}||'%'
+		    </if>
+		    <if test="remark != null and remark != ''">
+		       	and REMARK like '%'||#{remark}||'%'
+		    </if>
+		    <if test="delFlag != null and delFlag != ''">
+		       	and DEL_FLAG=#{delFlag}
+		    </if>
+		    <if test="clientUrl != null and clientUrl != ''">
+		       	and CLIENT_URL=#{clientUrl}
+		    </if>
+		    <if test="clientImg != null and clientImg != ''">
+		       	and CLIENT_IMG=#{clientImg}
+		    </if>
+		</where>
+	</select>
+
+  <resultMap id="BaseResultMap" type="com.chinaoly.frm.security.Model.Client">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CLIENT_PASSWORD" jdbcType="VARCHAR" property="clientPassword" />
+    <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="CLIENT_URL" jdbcType="VARCHAR" property="clientUrl" />
+    <result column="CLIENT_IMG" jdbcType="VARCHAR" property="clientImg" />
+  </resultMap>
+</mapper>

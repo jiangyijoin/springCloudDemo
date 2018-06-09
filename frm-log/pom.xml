@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>FRM</artifactId>
+        <groupId>com.chinaoly.frm</groupId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>frm-log</artifactId>
+    <description>框架-日志中心</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.chinaoly.frm</groupId>
+			<artifactId>frm-common</artifactId>
+			<version>${baseframe.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chinaoly.frm</groupId>
+			<artifactId>frm-core</artifactId>
+			<version>${baseframe.version}</version>
+		</dependency>
+
+		<!--不用说，肯定是spring aop包-->
+      	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+   		</dependency>
+    	<!--spring上下文包，在加载spring配置文件时用到-->
+      	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+    	</dependency>
+    	<!--使用AspectJ方式注解需要相应的包-->
+      	<dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+        <!--使用AspectJ方式注解需要相应的包-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-api</artifactId>
+         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.logback-extensions</groupId>
+            <artifactId>logback-ext-spring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-access</artifactId>
+        </dependency>
+	</dependencies>
+
+</project>

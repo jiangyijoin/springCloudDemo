@@ -1,0 +1,31 @@
+server:
+  port: 7090
+spring:
+  application:
+    name: eureka-client1
+  http :
+    encoding :
+      force : true
+      charset : UTF-8
+      enabled : true
+  datasource:
+    type : com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.1.151:1521:ORCL
+    username: chinaoly
+    password: chinaoly
+    druid :
+      maxWait : 500
+      max-active : 500
+      max-total : 500
+  redis :
+      host : 192.168.1.146
+      password : chinaoly
+      database : 0
+      port : 6379
+      timeout : 3000
+      pool :
+        max-idle : 500
+        min-idle : 50
+mybatis:
+  type-aliases-package : com.chinaoly.frm.process.entity

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaoly.frm.security.dao.mapper.AccountInfoMapper">
+
+<update id="setInitPassword">
+	update T_SYS_ACCOUNT
+	set password = '123456'
+	where ID in
+	<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</update>
+
+<select id="findAccInfoById" resultMap="AccountInfoVoMap">
+	<include refid="AccountInfoVoSelect"/> where I.ID = #{id}
+</select>
+
+<select id="findAccInfoByAccName" resultMap="AccountInfoVoMap">
+	<include refid="AccountInfoVoSelect"/> where A.ACCOUNT_NAME = #{accountName}
+</select>
+
+<select id="selectAllAcountInfoes" resultMap="AccountInfoVoMap">
+	<include refid="AccountInfoVoSelect"/>
+	<where>
+		<if test="accountName != null and accountName!=''">
+	       	and ACCOUNT_Name like '%'||#{accountName,jdbcType=VARCHAR}||'%'
+	    </if>
+	    <if test="officeName != null and officeName!=''">
+	       	and OFFICE_Name like '%'||#{officeName,jdbcType=VARCHAR}||'%'
+	    </if>
+	    <if test="accountInfo != null and accountInfo.id != null and accountInfo.id != ''">
+	       	and I.ID=#{accountInfo.id}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.staffCard != null and accountInfo.staffCard != ''">
+	       	and STAFF_CARD like '%'||#{accountInfo.staffCard}||'%'
+	    </if>
+	    <if test="accountInfo != null and accountInfo.officeCode != null and accountInfo.officeCode != ''">
+	       	and I.OFFICE_CODE=#{accountInfo.officeCode}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.userLevel != null and accountInfo.userLevel != ''">
+	       	and USER_LEVEL=#{accountInfo.userLevel}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.userName != null and accountInfo.userName != ''">
+	       	and USER_NAME like '%'||#{accountInfo.userName}||'%'
+	    </if>
+	    <if test="accountInfo != null and accountInfo.nickName != null and accountInfo.nickName != ''">
+	       	and NICK_NAME=#{accountInfo.nickName}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.sex != null and accountInfo.sex != ''">
+	       	and SEX=#{accountInfo.sex}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.email != null and accountInfo.email != ''">
+	       	and EMAIL=#{accountInfo.email}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.phone != null and accountInfo.phone != ''">
+	       	and PHONE=#{accountInfo.phone}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.minMobileNo != null and accountInfo.minMobileNo != ''">
+	       	and MIN_MOBILE_NO=#{accountInfo.minMobileNo}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.fixedNo != null and accountInfo.fixedNo != ''">
+	       	and FIXED_NO=#{accountInfo.fixedNo}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.img != null and accountInfo.img != ''">
+	       	and IMG=#{accountInfo.img}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.idCard != null and accountInfo.idCard != ''">
+	       	and ID_CARD=#{accountInfo.idCard}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.loginIp != null and accountInfo.loginIp != ''">
+	       	and LOGIN_IP=#{accountInfo.loginIp}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.loginTime != null and accountInfo.loginTime != ''">
+	       	and LOGIN_TIME=#{accountInfo.loginTime}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.serialNumber != null and accountInfo.serialNumber != ''">
+	       	and SERIAL_NUMBER=#{accountInfo.serialNumber}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.registerDate != null and accountInfo.registerDate != ''">
+	       	and REGISTER_DATE=#{accountInfo.registerDate}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.endDate != null and accountInfo.endDate != ''">
+	       	and END_DATA=#{accountInfo.endDate}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.accountExpiredStarttime != null and accountInfo.accountExpiredStarttime != ''">
+	       	and ACCOUNT_EXPIRED_STARTTIME=#{accountInfo.accountExpiredStarttime}
+	    </if>
+	    <if test="accountInfo != null and accountInfo.accountExpiredEndtime != null and accountInfo.accountExpiredEndtime != ''">
+	       	and ACCOUNT_EXPIRED_ENDTIME=#{accountInfo.accountExpiredEndtime}
+	    </if>
+	</where>	    
+</select>
+
+
+<sql id="AccountInfoVoSelect">
+	SELECT I.*, A.ACCOUNT_NAME, A.PASSWORD, A.DEL_FLAG AS ACCDELFLAG, O.OFFICE_NAME, D.DICT_NAME AS LEVEL_NAME  FROM T_SYS_ACCOUNT_INFO I 
+	LEFT JOIN T_SYS_ACCOUNT A ON A.ID = I.ID 
+	LEFT JOIN T_SYS_OFFICE O ON I.OFFICE_CODE = O.OFFICE_CODE 
+	LEFT JOIN T_SYS_DICT D ON I.USER_LEVEL = D.ID 
+</sql>
+
+<sql id="BaseResultType">
+STAFF_CARD,OFFICE_CODE,USER_LEVEL,USER_NAME,NICK_NAME,SEX,EMAIL,PHONE,MIN_MOBILE_NO,FIXED_NO,IMG,ID_CARD,LOGIN_IP,
+LOGIN_TIME,SERIAL_NUMBER,REGISTER_DATE,END_DATA,ACCOUNT_EXPIRED_STARTTIME,ACCOUNT_EXPIRED_ENDTIME
+</sql>
+
+  <resultMap id="AccountInfoVoMap" type="com.chinaoly.frm.security.vo.AccountInfoVo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="STAFF_CARD" jdbcType="VARCHAR" property="staffCard" />
+    <result column="OFFICE_CODE" jdbcType="VARCHAR" property="officeCode" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="NICK_NAME" jdbcType="VARCHAR" property="nickName" />
+    <result column="SEX" jdbcType="DECIMAL" property="sex" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="MIN_MOBILE_NO" jdbcType="VARCHAR" property="minMobileNo" />
+    <result column="FIXED_NO" jdbcType="VARCHAR" property="fixedNo" />
+    <result column="IMG" jdbcType="VARCHAR" property="img" />
+    <result column="ID_CARD" jdbcType="VARCHAR" property="idCard" />
+    <result column="LOGIN_IP" jdbcType="VARCHAR" property="loginIp" />
+    <result column="LOGIN_TIME" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="SERIAL_NUMBER" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="REGISTER_DATE" jdbcType="TIMESTAMP" property="registerDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="ACCOUNT_EXPIRED_STARTTIME" jdbcType="TIMESTAMP" property="accountExpiredStarttime" />
+    <result column="ACCOUNT_EXPIRED_ENDTIME" jdbcType="TIMESTAMP" property="accountExpiredEndtime" />
+    <result column="USER_LEVEL" jdbcType="VARCHAR" property="userLevel" />
+    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="OFFICE_NAME" jdbcType="VARCHAR" property="officeName" />
+    <result column="LEVEL_NAME" jdbcType="VARCHAR" property="levelName" />
+    <result column="ACCDELFLAG" jdbcType="VARCHAR" property="accDelFlag" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.chinaoly.frm.security.Model.AccountInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="STAFF_CARD" jdbcType="VARCHAR" property="staffCard" />
+    <result column="OFFICE_CODE" jdbcType="VARCHAR" property="officeCode" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="NICK_NAME" jdbcType="VARCHAR" property="nickName" />
+    <result column="SEX" jdbcType="DECIMAL" property="sex" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="MIN_MOBILE_NO" jdbcType="VARCHAR" property="minMobileNo" />
+    <result column="FIXED_NO" jdbcType="VARCHAR" property="fixedNo" />
+    <result column="IMG" jdbcType="VARCHAR" property="img" />
+    <result column="ID_CARD" jdbcType="VARCHAR" property="idCard" />
+    <result column="LOGIN_IP" jdbcType="VARCHAR" property="loginIp" />
+    <result column="LOGIN_TIME" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="SERIAL_NUMBER" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="REGISTER_DATE" jdbcType="TIMESTAMP" property="registerDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="ACCOUNT_EXPIRED_STARTTIME" jdbcType="TIMESTAMP" property="accountExpiredStarttime" />
+    <result column="ACCOUNT_EXPIRED_ENDTIME" jdbcType="TIMESTAMP" property="accountExpiredEndtime" />
+    <result column="OFFICE_NAME" jdbcType="VARCHAR" property="officeName" />
+    <result column="USER_LEVEL" jdbcType="VARCHAR" property="userLevel" />
+  </resultMap>
+</mapper>
